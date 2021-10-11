@@ -24,8 +24,8 @@ from elasticsearch.exceptions import NotFoundError, TransportError
 
 import argparse
 
-output_path= "./result_token"
-output_file = output_path+ "/letter.txt"
+output_path= "./result_filter"
+output_file = output_path+ "/kstem.txt"
 
 __author__ = 'bejar'
 
