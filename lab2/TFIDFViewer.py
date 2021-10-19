@@ -88,13 +88,13 @@ def toTFIDF(client, index, file_id):
     dcount = doc_count(client, index)
 
     tfidfw = []
-    for (t, w),(_, df) in zip(file_tv, file_df):
-        #
-        # Something happens here
-        #
-        pass
 
-    return normalize(tfidfw)
+    for (t, w),(_, df) in zip(file_tv, file_df):
+        tf = w / max_freq
+        idf = np.log2(dcount/df)
+        tfidfw.append((t,tf*idf))
+
+    return tfidfw
 
 def print_term_weigth_vector(twv):
     """
@@ -102,10 +102,11 @@ def print_term_weigth_vector(twv):
     :param twv:
     :return:
     """
-    #
-    # Program something here
-    #
-    pass
+    print("term\tweigth(tfidf weight)")
+    for t,w in twv:
+        print(str(t)+"\t"+str(w))
+    
+    return
 
 
 def normalize(tw):
@@ -115,10 +116,14 @@ def normalize(tw):
     :param tw:
     :return:
     """
-    #
-    # Program something here
-    #
-    return None
+    # Compute the norm
+    norm = 0
+    for element in tw:
+        norm += element**2
+    
+    norm = np.sqrt(norm)
+    # Divide the array
+    return [element/norm for element in tw]
 
 
 def cosine_similarity(tw1, tw2):
@@ -128,10 +133,32 @@ def cosine_similarity(tw1, tw2):
     :param tw2:
     :return:
     """
-    #
-    # Program something here
-    #
-    return 0
+    # To be
+    #  th most efficient possible we can compute the norm and the scalar product
+    # in the same time
+    norm1 = 0
+    norm2 = 0
+    scalarProduct = 0
+
+    index1 = 0
+    index2 = 0
+
+    while (index1<len(tw1) and index2<len(tw2)):
+        # Have a value to the product only if the coordonates is not value
+        if (tw1[index1][0]==tw2[index2][0]):
+            scalarProduct += tw1[index1][1]*tw2[index2][1]
+            norm1 += tw1[index1][1]**2
+            norm2 += tw2[index2][1]**2
+            index1 += 1
+            index2 += 1
+        elif (tw1[index1][0]<tw2[index2][0]):
+            norm1 += tw1[index1][1]**2
+            index1 +=1
+        else:
+            norm2 += tw2[index2][1]**2
+            index2 +=1
+
+    return scalarProduct/(np.sqrt(norm1)*np.sqrt(norm2))
 
 def doc_count(client, index):
     """
