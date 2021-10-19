@@ -143,9 +143,14 @@ def cosine_similarity(tw1, tw2):
     index1 = 0
     index2 = 0
 
-    while (index1<len(tw1) and index2<len(tw2)):
-        # Have a value to the product only if the coordonates is not value
-        if (tw1[index1][0]==tw2[index2][0]):
+    while (index1<len(tw1) or index2<len(tw2)):
+        if (index1>=len(tw1)):
+            norm2 += tw2[index2][1]**2
+            index2 += 1
+        elif (index2>=len(tw2)):
+            norm1 += tw1[index1][1]**2
+            index1 += 1
+        elif ( tw1[index1][0]==tw2[index2][0]):
             scalarProduct += tw1[index1][1]*tw2[index2][1]
             norm1 += tw1[index1][1]**2
             norm2 += tw2[index2][1]**2
