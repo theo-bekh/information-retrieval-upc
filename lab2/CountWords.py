@@ -25,7 +25,7 @@ from elasticsearch.exceptions import NotFoundError, TransportError
 import argparse
 
 output_path= "./result_filter"
-output_file = output_path+ "/kstem.txt"
+output_file = output_path+ "/arxiv_abs.txt"
 
 __author__ = 'bejar'
 
